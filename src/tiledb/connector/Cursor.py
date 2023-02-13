@@ -43,6 +43,8 @@ class Cursor:
         return [(column, str(self.results[column].dtype)) for column in self.results.columns]
 
     def rowcount(self):
+        if self.results is None or len(self.results) == 0:
+            return -1
         return len(self.results)
 
     def fetchall(self):
