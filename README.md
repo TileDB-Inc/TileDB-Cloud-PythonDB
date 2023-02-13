@@ -7,7 +7,7 @@ This can also be seen as an alternative to a JDBC or ODBC driver.
 ## Usage
 
 ```
-    connection = connect(token = <API_TOKEN>)
+    connection = TileDBConnection(token=<API_TOKEN>)
     cursor = connection.cursor()
     cursor.execute("SELECT * from `tiledb://TileDB-Inc/quickstart_dense`")
 
