@@ -8,6 +8,31 @@ class Error(Exception):
         return "Generic error: " + self.message
 
 
+class InterfaceError(Error):
+    """Raised when the database encountered a programming error."""
+
+    def __init__(self, message):
+        self.message = message
+
+    def __str__(self):
+        return "Interface error: " + self.message
+
+
+class DatabaseError(Error):
+    """Raised when the database encountered a programming error."""
+
+    def __init__(self, message):
+        self.message = message
+
+    def __str__(self):
+        return "Database error: " + self.message
+
+
+class _Warning(Exception):
+    """Exception for important warnings."""
+    pass
+
+
 class ProgrammingError(Error):
     """Raised when the database encountered a programming error."""
 
@@ -20,6 +45,7 @@ class ProgrammingError(Error):
 
 class DataError(Error):
     """Raised when the database encountered data-related errors."""
+
     def __init__(self, message):
         self.message = message
 
