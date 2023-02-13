@@ -2,7 +2,7 @@ import tiledb.cloud
 from Cursor import Cursor
 
 
-class connect:
+class TileDBConnection:
     def __init__(self, token):
         self.token = token
         tiledb.cloud.login(token=self.token)
