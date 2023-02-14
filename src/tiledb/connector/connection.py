@@ -1,4 +1,6 @@
 import tiledb.cloud
+
+from .error import NotSupportedError
 from .cursor import Cursor
 
 
@@ -11,10 +13,10 @@ class TileDBConnection:
         return Cursor()
 
     def rollback(self):
-        pass
+        raise NotSupportedError("Operation not supported")
 
     def commit(self):
-        pass
+        raise NotSupportedError("Operation not supported")
 
     def close(self):
         pass

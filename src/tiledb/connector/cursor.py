@@ -1,5 +1,5 @@
 import tiledb.cloud
-from .error import DataError
+from .error import DataError, _Warning, NotSupportedError
 from .util import getDBType
 
 
@@ -7,27 +7,34 @@ class Cursor:
     def __init__(self):
         self.results = None
         self.row_index = 0
+        self.fetchmanysize = 1
 
-    def executemany(self, query, size):
-        pass
+    def executemany(self, query):
+        self.execute(query)
 
     def execute(self, query):
         self.results = tiledb.cloud.sql.exec(query=query)
 
-    def fetchmany(self, size):
-        pass
+    def fetchmany(self):
+        if self.fetchmanysize + self.row_index > len(self.results):
+            raise DataError("Index out of bounds. There are less values than the input parameter in fetchmany(size). "
+                            "Values requested: " + str(self.fetchmanysize) + ". Values available: " + str(len(
+                self.results) - self.row_index))
+        rows = self.results.iloc[self.row_index:self.row_index + self.fetchmanysize]
+        self.row_index += self.fetchmanysize
+        return list(map(tuple, rows.values))
 
     def nextset(self):
-        pass
+        raise NotSupportedError("Operation not supported")
 
-    def arraysize(self, size):
-        pass
+    def arraysize(self, size=1):
+        self.fetchmanysize = size
 
     def setinputsizes(self, sizes):
-        pass
+        raise NotSupportedError("Operation not supported")
 
     def setoutputsize(self, sizes):
-        pass
+        raise NotSupportedError("Operation not supported")
 
     def fetchone(self):
         if self.results is None:

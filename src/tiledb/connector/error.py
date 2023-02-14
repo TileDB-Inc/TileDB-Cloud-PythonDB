@@ -30,7 +30,12 @@ class DatabaseError(Error):
 
 class _Warning(Exception):
     """Exception for important warnings."""
-    pass
+
+    def __init__(self, message):
+        self.message = message
+
+    def __str__(self):
+        return "Warning: " + self.message
 
 
 class ProgrammingError(Error):
