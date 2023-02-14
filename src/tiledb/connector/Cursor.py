@@ -1,9 +1,9 @@
 import tiledb.cloud
 from Error import DataError
+from Utils import getDBType
 
 
 class Cursor:
-
     def __init__(self):
         self.results = None
         self.row_index = 0
@@ -40,7 +40,7 @@ class Cursor:
             return None
 
     def description(self):
-        return [(column, str(self.results[column].dtype)) for column in self.results.columns]
+        return [(column, getDBType(dtype)) for column, dtype in self.results.dtypes.iteritems()]
 
     def rowcount(self):
         if self.results is None or len(self.results) == 0:
