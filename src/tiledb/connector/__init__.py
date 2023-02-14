@@ -2,9 +2,9 @@ apilevel = "2.0"
 threadsafety = 2
 paramstyle = "pyformat"
 
-from .Cursor import Cursor
-from .Connection import TileDBConnection
-from .Error import (
+from .cursor import Cursor
+from .connection import TileDBConnection
+from .error import (
     DatabaseError,
     DataError,
     Error,

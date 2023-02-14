@@ -1,5 +1,5 @@
 import tiledb.cloud
-from Cursor import Cursor
+from .cursor import Cursor
 
 
 class TileDBConnection:

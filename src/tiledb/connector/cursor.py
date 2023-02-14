@@ -1,6 +1,6 @@
 import tiledb.cloud
-from Error import DataError
-from Utils import getDBType
+from .error import DataError
+from .util import getDBType
 
 
 class Cursor:
