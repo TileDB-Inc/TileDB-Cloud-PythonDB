@@ -35,7 +35,7 @@ class Cursor:
             # There are no more records
             return None
 
-        rows = self.results.slice(self.row_index, self.row_index + size)
+        rows = self.results[self.row_index:self.row_index + size]
         self.row_index += size
         return rows.to_pylist()
 
@@ -73,9 +73,12 @@ class Cursor:
         return len(self.results)
 
     def fetchall(self):
+        if self.row_index > 0:
+            return self.fetchmany(len(self.results) - self.row_index)
         if self.results is None:
             raise DataError("The query results are null")
         return self.results.to_pylist()
 
     def close(self):
-        pass
+        self.row_index = 0
+        self.inputarraysize = 1

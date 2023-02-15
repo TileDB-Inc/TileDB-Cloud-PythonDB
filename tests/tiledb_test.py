@@ -6,7 +6,7 @@ tkn = os.environ.get('DB_TOKEN')
 connection = TileDBConnection(token=tkn)
 cursor = connection.cursor()
 cursor.execute("SELECT * from `tiledb://TileDB-Inc/quickstart_dense`")
-correct = [
+correctData = [
     {'rows': 1, 'cols': 1, 'a': 1},
     {'rows': 1, 'cols': 2, 'a': 2},
     {'rows': 1, 'cols': 3, 'a': 3},
@@ -25,7 +25,41 @@ correct = [
     {'rows': 4, 'cols': 4, 'a': 16},
 ]
 
+correctDescription = [
+    ('rows', 'NUMBER'),
+    ('cols', 'NUMBER'),
+    ('a', 'NUMBER'),
+]
+
 
 def test_fetchall():
     results = cursor.fetchall()
-    assert results == correct
+    assert results == correctData
+
+
+def test_fetchmany():
+    results = cursor.fetchmany(5)
+    assert results == correctData[:5]
+    results = cursor.fetchmany(2)
+    assert results == correctData[5:7]
+
+
+def test_fetchone():
+    cursor.close()
+    results = cursor.fetchone()
+    assert results == correctData[:1]
+
+
+def test_fetchmix():
+    cursor.close()
+    results = cursor.fetchmany(5)
+    assert results == correctData[:5]
+    results = cursor.fetchone()
+    assert results == correctData[5:6]
+    results = cursor.fetchall()
+    assert results == correctData[6:]
+
+
+def test_description():
+    desc = cursor.description()
+    assert desc == correctDescription
