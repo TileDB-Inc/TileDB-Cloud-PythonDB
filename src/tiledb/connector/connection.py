@@ -16,7 +16,8 @@ class TileDBConnection:
         raise NotSupportedError("Operation not supported")
 
     def commit(self):
-        raise NotSupportedError("Operation not supported")
+        # Commit must work, even if it doesn't do anything
+        pass
 
     def close(self):
         pass
