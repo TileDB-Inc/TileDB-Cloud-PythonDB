@@ -13,7 +13,7 @@ pip install .
 
 ## Usage
 
-```
+```python
 connection = TileDBConnection(token=<API_TOKEN>)
 cursor = connection.cursor()
 cursor.execute("SELECT * from `tiledb://TileDB-Inc/quickstart_dense`")
