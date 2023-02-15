@@ -8,24 +8,36 @@ class Cursor:
         self.results = None
         self.row_index = 0
         self.inputarraysize = 1
+        self.description_cache = None
 
     def executemany(self, query):
         self.execute(query)
 
     def execute(self, query):
-        self.results = tiledb.cloud.sql.exec(query=query)
+        try:
+            self.results = tiledb.cloud.sql.exec(query=query, raw_results=True)
+        except Exception as e:
+            self.results = None
+            raise DataError(f"Error executing query: {str(e)}")
 
     def fetchmany(self, size=-1):
+        if self.results is None or len(self.results) == 0:
+            return None
+
         if size == -1:
             size = self.inputarraysize
 
         if size + self.row_index > len(self.results):
-            raise DataError("Index out of bounds. There are less values than the input parameter in fetchmany(size). "
-                            "Values requested: " + str(size) + ". Values available: " + str(len(
-                self.results) - self.row_index))
-        rows = self.results.iloc[self.row_index:self.row_index + size]
+            # give all that is remaining
+            size = len(self.results) - self.row_index
+
+        if size == 0:
+            # There are no more records
+            return None
+
+        rows = self.results.slice(self.row_index, self.row_index + size)
         self.row_index += size
-        return list(map(tuple, rows.values))
+        return rows.to_pylist()
 
     def nextset(self):
         raise NotSupportedError("Operation not supported")
@@ -42,19 +54,18 @@ class Cursor:
         raise NotSupportedError("Operation not supported")
 
     def fetchone(self):
-        if self.results is None:
-            raise DataError("The query results are null")
-        if self.row_index < len(self.results):
-            row = self.results.iloc[self.row_index]
-            self.row_index += 1
-            return tuple(row)
-        else:
-            return None
+        return self.fetchmany(1)
 
     def description(self):
+        if self.description_cache is not None:
+            return self.description_cache
+
         if self.results is None or len(self.results) == 0:
             return None
-        return [(column, getDBType(dtype)) for column, dtype in self.results.dtypes.iteritems()]
+
+        description = [(field.name, getDBType(field.type)) for field in self.results.schema]
+        self.description_cache = description
+        return description
 
     def rowcount(self):
         if self.results is None or len(self.results) == 0:
@@ -64,7 +75,7 @@ class Cursor:
     def fetchall(self):
         if self.results is None:
             raise DataError("The query results are null")
-        return list(map(tuple, self.results.values))
+        return self.results.to_pylist()
 
     def close(self):
         pass

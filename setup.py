@@ -24,6 +24,7 @@ setup(
     install_requires=[
         "pandas",
         "tiledb-cloud",
+        "pyarrow>=7.0.0"
     ],
     license="MIT",
     classifiers=[
