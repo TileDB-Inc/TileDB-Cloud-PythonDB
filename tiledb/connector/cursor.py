@@ -80,5 +80,8 @@ class Cursor:
         return self.results.to_pylist()
 
     def close(self):
+        pass
+
+    def reset(self):
         self.row_index = 0
         self.inputarraysize = 1

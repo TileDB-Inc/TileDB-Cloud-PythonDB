@@ -33,11 +33,13 @@ correctDescription = [
 
 
 def test_fetchall():
+    cursor.reset()
     results = cursor.fetchall()
     assert results == correctData
 
 
 def test_fetchmany():
+    cursor.reset()
     results = cursor.fetchmany(5)
     assert results == correctData[:5]
     results = cursor.fetchmany(2)
@@ -45,13 +47,13 @@ def test_fetchmany():
 
 
 def test_fetchone():
-    cursor.close()
+    cursor.reset()
     results = cursor.fetchone()
     assert results == correctData[:1]
 
 
 def test_fetchmix():
-    cursor.close()
+    cursor.reset()
     results = cursor.fetchmany(5)
     assert results == correctData[:5]
     results = cursor.fetchone()
@@ -61,5 +63,6 @@ def test_fetchmix():
 
 
 def test_description():
+    cursor.reset()
     desc = cursor.description()
     assert desc == correctDescription
