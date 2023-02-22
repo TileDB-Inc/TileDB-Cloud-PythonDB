@@ -85,3 +85,18 @@ class Cursor:
     def reset(self):
         self.row_index = 0
         self.inputarraysize = 1
+
+    def scroll(self, value, mode="relative"):
+        if mode == "relative":
+            self.row_index += value
+        elif mode == "absolute":
+            self.row_index = value
+        else:
+            raise ProgrammingError(
+                f"Invalid mode '{mode}'. Please choose between 'relative' and 'absolute'."
+            )
+
+        if self.row_index < 0 or self.row_index > len(self.results) - 1:
+            raise IndexError(
+                f"Row index {self.row_index} is out of bounds (0 to {len(self.results) - 1})."
+            )

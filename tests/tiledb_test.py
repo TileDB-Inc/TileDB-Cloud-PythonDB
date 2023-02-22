@@ -39,7 +39,7 @@ def test_fetchall():
 
 
 def test_fetchmany():
-    cursor.reset()
+    cursor.scroll(0, "absolute")
     results = cursor.fetchmany(5)
     assert results == correctData[:5]
     results = cursor.fetchmany(2)
@@ -47,13 +47,13 @@ def test_fetchmany():
 
 
 def test_fetchone():
-    cursor.reset()
+    cursor.scroll(1, "absolute")
     results = cursor.fetchone()
-    assert results == correctData[:1]
+    assert results == correctData[1:2]
 
 
 def test_fetchmix():
-    cursor.reset()
+    cursor.scroll(0, "absolute")
     results = cursor.fetchmany(5)
     assert results == correctData[:5]
     results = cursor.fetchone()
@@ -63,6 +63,6 @@ def test_fetchmix():
 
 
 def test_description():
-    cursor.reset()
+    cursor.scroll(0, "absolute")
     desc = cursor.description()
     assert desc == correctDescription
