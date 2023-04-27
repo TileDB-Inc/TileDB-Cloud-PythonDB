@@ -1,4 +1,4 @@
-# The development of this repository has moved under [TileDB-Cloud-Py](https://github.com/TileDB-Inc/TileDB-Cloud-Py)
+# The development of this repository has moved under [TileDB-Cloud-Py](https://github.com/TileDB-Inc/TileDB-Cloud-Py/tree/main/src/tiledb/cloud/sql)
 
 <a href="https://tiledb.com/"><img src="https://github.com/TileDB-Inc/TileDB/raw/dev/doc/source/_static/tiledb-logo_color_no_margin_@4x.png" alt="TileDB logo" width="400"></a>
 
